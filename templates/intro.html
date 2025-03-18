@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to AI Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <div class="intro-container">
+        <h1 id="title">Welcome to AI-Powered Finance Tracker</h1>
+        <p id="desc">This tool helps you manage your finances by categorizing expenses automatically.</p>
+        <p id="info">Enter your expenses and let AI analyze your spending patterns.</p>
+        <button class="start-btn" onclick="redirectToLogin()">Get Started</button>
+    </div>
+
+    <script>
+        function redirectToLogin() {
+            window.location.href = "/home";
+        }
+    </script>
+    
+    
+</body>
+</html>

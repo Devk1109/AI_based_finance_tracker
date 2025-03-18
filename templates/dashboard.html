@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+
+    <!-- Logout Button -->
+    <div class="logout-container">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+ 
+    <!-- Spending Breakdown (Top-Right) -->
+    <div class="spending-box">
+        <h3>Spending Breakdown</h3>
+        <div id="pie-chart-container"> {{ pie_chart|safe }} </div>
+    </div>
+
+    <!-- Transactions (Below Budget Box) -->
+    <div class="transaction-box">
+        <h3>Transaction History</h3>
+        <div class="table-container">
+            <table id="transactions-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Unusual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction["Transaction ID"] }}</td>
+                        <td>{{ transaction["Date"] }}</td>
+                        <td>{{ transaction["Description"] }}</td>
+                        <td>${{ transaction["Amount"] }}</td>
+                        <td>{{ transaction["Category"] }}</td>
+                        <td class="{% if transaction['Unusual'] == 'Yes' %}unusual{% endif %}">
+                            {{ transaction["Unusual"] }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Monthly Spending Trends (Left Corner) -->
+    <div class="trends-box">
+        <h3>Monthly Spending Trends</h3>
+        <div id="bar-chart-container"> {{ bar_chart|safe }} </div>
+    </div>
+    
+
+    <div class="comparison-box">
+        <h3>Monthly Comparison by Category</h3>
+        <div class="sliding-box" id="category-comparison-container">
+            {{ category_comparison_chart|safe }}
+        </div>
+    </div>
+
+    <h2>Welcome, {{ username }}</h2>
+
+    <div class="dashboard-container">
+
+    </div>
+
+    <!-- Transaction Entry Box -->
+    <div class="transaction-entry-box">
+        <h3>Add New Transaction</h3>
+    
+        <div class="transaction-inputs">
+            <input type="text" id="entry-transaction-id" placeholder="Transaction ID">
+            <input type="date" id="entry-date">
+            <input type="text" id="entry-description" placeholder="Description">
+            <input type="number" id="entry-amount" placeholder="Amount ($)">
+            
+        </div>
+
+        <button class="add-transaction-btn" onclick="submitTransaction()">Add Transaction</button>
+        <p id="entry-msg" class="error-message"></p>
+    </div>
+
+</div> <!-- Closing divs -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+    <script>
+        function logout() {
+            fetch("/logout", { method: "POST" })
+                .then(() => window.location.href = "/home")
+                .catch(error => console.error("Logout Error:", error));
+        }
+    </script>
+
+
+</body>
+</html>
